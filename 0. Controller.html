@@ -8,49 +8,109 @@
 	<meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,user-scalable=no" />
 
 	<link rel="stylesheet" href="./css/bootstrap.min.css">
-	<link rel="stylesheet" href="./css/style.css"></head>
+	<link rel="stylesheet" href="./css/style.css">
+	<script src="/Users/videoteam/Documents/ptz_plugin/node_modules/obs-websocket-js/dist/obs-websocket.js"></script>
+</head>
 
 <body>
 
 	<div class="main">
 		<div class="row">
 			<div class="">
+				<!--
 				<header class="primary">
 					<h1><img src="images/PTZlogo.png" style="width:34%;padding-bottom:3px;"> OBS Controller</h1>
-				</header>				<nav class="primary">
-
+				</header>
+				-->
+				<nav class="primary">
+					<ul>
+						<li id="cam0button">
+							<!--<a class="" href="#" data-toggle="modal" data-target="#set_presets">Wall</a>-->
+							<a class="" href="javascript:selectCamera(0)">Wall</a>
+						</li>
+						<li id="cam1button">
+							<!--<a class="" href="#" data-toggle="modal" data-target="#cam_adjust_control_settings">Booth</a>-->
+							<a class="" href="javascript:selectCamera(1)">Booth</a>
+						</li>
+					</ul>
+				</nav>
 
 				<form role="form" class="form-horizontal">
 
 					<fieldset class="presets">
 						<div class="row">
-							<a style="width:112px;height:90px;" class="call_preset preset_button preset-1" data-preset="1" href="#preset-1"><img src="images/presets/1.png">1</a>
-							<a style="width:112px;height:90px;" class="call_preset preset_button preset-2" data-preset="2" href="#preset-2"><img src="images/presets/2.png">2</a>
-							<a style="width:112px;height:90px;" class="call_preset preset_button preset-3" data-preset="3" href="#preset-3"><img src="images/presets/3.png">3</a>
+							<a id="pb1" class="call_preset preset_button preset-1" data-preset="1" href="#preset-1">1</a>
+							<a id="pb2" class="call_preset preset_button preset-2" data-preset="2" href="#preset-2">2</a>
+							<a id="pb3" class="call_preset preset_button preset-3" data-preset="3" href="#preset-3">3</a>
+							<a id="pb4" class="call_preset preset_button preset-4" data-preset="4" href="#preset-4">4</a>
 						</div>
 						<div class="row">
-							<a style="width:112px;height:90px;"  class="call_preset preset_button preset-4" data-preset="4" href="#preset-4"><img src="images/presets/4.png">4</a>
-							<a style="width:112px;height:90px;"  class="call_preset preset_button preset-5" data-preset="5" href="#preset-5"><img src="images/presets/5.png">5</a>
-							<a style="width:112px;height:90px;"  class="call_preset preset_button preset-6" data-preset="6" href="#preset-6"><img src="images/presets/6.png">6</a>
+							<a id="pb5" class="call_preset preset_button preset-5" data-preset="5" href="#preset-5">5</a>
+							<a id="pb6" class="call_preset preset_button preset-6" data-preset="6" href="#preset-6">6</a>
+							<a id="pb7" class="call_preset preset_button preset-7" data-preset="7" href="#preset-7">7</a>
+							<a id="pb8" class="call_preset preset_button preset-8" data-preset="8" href="#preset-8">8</a>
 						</div>
 						<div class="row">
-							<a class="call_preset preset_button preset-7" data-preset="7" href="#preset-7">7</a>
-							<a class="call_preset preset_button preset-8" data-preset="8" href="#preset-8">8</a>
-							<a class="call_preset preset_button preset-9" data-preset="9" href="#preset-9">9</a>
+							<a id="pb9" class="call_preset preset_button preset-9" data-preset="9" href="#preset-9">9</a>
+							<a id="pb10" class="call_preset preset_button preset-10" data-preset="10" href="#preset-10">10</a>
+							<a id="pb11" class="call_preset preset_button preset-11" data-preset="11" href="#preset-11">11</a>
+							<a id="pb12" class="call_preset preset_button preset-12" data-preset="12" href="#preset-12">12</a>
 						</div>
-					</fieldset>				</nav>
 
-	<nav class="primary">
-					<ul>
-						<li>
-							<a class="" href="#" data-toggle="modal" data-target="#set_presets">Assign Presets</a>
-						</li>
-						<li>
-							<a class="" href="#" data-toggle="modal" data-target="#cam_adjust_control_settings">Preferences</a>
-						</li>
-					</ul>
-				</nav>
+						<!--
+						<div class="row">
+							<a href="#" class="autopan"></a>
+						</div>
+						-->
+					</fieldset>
 
+					<fieldset class="controls">
+						<div class="zoom_controls">
+							<div class="rocker">
+								<div class="row">
+									<a class="toggle_button toggle-up toggle-zoom-in adjust_zoom" data-action="zoomin" href="#zoom"></a>
+								</div>
+								<div class="row">
+									<a class="toggle_button toggle-down toggle-zoom-out adjust_zoom" data-action="zoomout" href="#zoom"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="focus_controls">
+							<div class="rocker">
+								<div class="row">
+									<a class="toggle_button toggle-up toggle-focus-in adjust_focus" data-action="focusin" href="#focus"></a>
+								</div>
+								<div class="row">
+									<a class="toggle_button toggle-down toggle-focus-out adjust_focus" data-action="focusout" href="#focus"></a>
+								</div>
+							</div>
+						</div>
+
+						<div class="pantilt_controls">
+							<div class="row">
+								<!--
+								<div class="pantilt_image pantilt-blank-top-left"></div>
+								-->
+								<div class="pantilt_image pantilt-blank-top-left" style="color: #ccc; font-size: 14pt; display: flex;justify-content: center;align-items: center;"><a class="" href="#" data-toggle="modal" data-target="#set_presets" style="color: #aaa;">SET</a></center></div>
+								<a id="pantilt-button-up" class="pantilt-up pantilt_image adjust_pantilt" href="#pantilt" data-action="down"></a>
+								<!--
+								<div class="pantilt_image pantilt-blank-top-right"></div>
+								-->
+								<div class="pantilt_image pantilt-blank-top-right" style="color: #ccc; font-size: 14pt; display: flex;justify-content: center;align-items: center;"><a class="" href="#" data-toggle="modal" data-target="#cam_adjust_control_settings" style="color: #aaa;">Pref</a></center></div>
+							</div>
+							<div class="row">
+								<a id="pantilt-button-left" class="pantilt-left pantilt_image adjust_pantilt" href="#pantilt" data-action="right"></a>
+								<a id="pantilt-button-home" class="pantilt-home pantilt_image adjust_pantilt" href="#pantilt" data-action="home"></a>
+								<a id="pantilt-button-right" class="pantilt-right pantilt_image adjust_pantilt" href="#pantilt" data-action="left"></a>
+							</div>
+							<div class="row">
+								<div class="pantilt_image pantilt-blank-bottom-left"></div>
+								<a id="pantilt-button-down" class="pantilt-down pantilt_image adjust_pantilt" href="#pantilt" data-action="up"></a>
+								<div class="pantilt_image pantilt-blank-bottom-right"></div>
+							</div>
+						</div>
+					</fieldset>
 
 				</form>
 
@@ -74,6 +134,7 @@
 					<h4 class="modal-title" id="set_presets_label">Assign Presets</h4>
 				</div>
 				<div class="modal-body">
+					<!--
 					<div class="row">
 						<div class="col-xs-12">
 							<ol>
@@ -82,46 +143,55 @@
 							</ol>
 						</div>
 					</div>
-
+					-->
 					<br>
 
 					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="1">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="2">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="3">
 						</div>
-					</div>
-
-					<br>
-
-					<div class="row">
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="4">
 						</div>
-						<div class="col-xs-4">
+					</div>
+
+					<br>
+
+					<div class="row">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="5">
 						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="6">
+						</div>
+						<div class="col-xs-3">
+							<input class="btn btn-primary btn-block assign_preset" type="button" value="7">
+						</div>
+						<div class="col-xs-3">
+							<input class="btn btn-primary btn-block assign_preset" type="button" value="8">
 						</div>
 					</div>
 
 					<br>
 
 					<div class="row">
-						<div class="col-xs-4">
-							<input class="btn btn-primary btn-block assign_preset" type="button" value="7">
-						</div>
-						<div class="col-xs-4">
-							<input class="btn btn-primary btn-block assign_preset" type="button" value="8">
-						</div>
-						<div class="col-xs-4">
+						<div class="col-xs-3">
 							<input class="btn btn-primary btn-block assign_preset" type="button" value="9">
+						</div>
+						<div class="col-xs-3">
+							<input class="btn btn-primary btn-block assign_preset" type="button" value="10">
+						</div>
+						<div class="col-xs-3">
+							<input class="btn btn-primary btn-block assign_preset" type="button" value="11">
+						</div>
+						<div class="col-xs-3">
+							<input class="btn btn-primary btn-block assign_preset" type="button" value="12">
 						</div>
 					</div>
 
@@ -149,7 +219,7 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title" id="cam_adjust_control_settings_label">Preferences</h4>
+					<h4 class="modal-title" id="cam_adjust_control_settings_label">Prefs</h4>
 				</div>
 				<div class="modal-body">
 

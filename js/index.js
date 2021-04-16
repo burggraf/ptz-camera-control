@@ -1,9 +1,33 @@
+try {
+	const obs = new OBSWebSocket();
+	obs.connect({ address: 'localhost:4444', password: '' });
+	console.log('connected');		
+} catch(err) {
+	console.log('error connecting to websocket', JSON.stringify(err));
+}
 
-var camera_ip = "192.168.0.190";
-var base_url = "http://" + camera_ip + "/cgi-bin";
+
+function selectCamera(camera) {
+	// reset preset button
+	document.getElementById('pb' + config.preset[config.camera].toString()).classList.remove('active');
+	config.camera = camera || 0;
+	// set new preset button
+	document.getElementById('pb' + config.preset[config.camera].toString()).classList.add('active');
+
+	base_url = "http://" + camera_ip[config.camera] + "/cgi-bin";
+	console.log('camera set to ' + camera + ' ' + base_url);
+
+
+	document.getElementById('cam0button').className='unpushed';
+	document.getElementById('cam1button').className='unpushed';
+	document.getElementById('cam' + camera + 'button').className='pushed';
+}
+var camera_ip = ["192.168.2.31","192.168.2.32"];
 // config defaults
 var defaults = {
     ip: camera_ip,
+	camera: 0,
+	preset: [1, 1],
     flip: 1,
     mirror: 1,
     invertcontrols: 1,
@@ -17,7 +41,10 @@ var defaults = {
     autopaninterval: 60,
 };
 var config = defaults;
+var base_url = "";
 config.ip = camera_ip;
+selectCamera(0);
+base_url = "http://" + config.ip[config.camera || 0] + "/cgi-bin";
 
 function get_config () {
 	var result = localStorage.getItem('configStorage');
@@ -30,7 +57,7 @@ function get_config () {
 
 function save_config () {
 	localStorage.setItem('configStorage', JSON.stringify(config));
-	console.log(config);
+	// console.log(config);
 }
 
 function run_action (action_url) {
@@ -54,7 +81,7 @@ function run_action (action_url) {
 function config_init () {
 
   config = get_config();
-	console.log(config);
+	// console.log(config);
 
 	// set the initial IP value for the camera ip input
 	$("#cam_ip").val(config.ip);
@@ -171,7 +198,7 @@ function update_labels () {
 function reload_cam () {
 
 	config.ip = $('#cam_ip').val();
-	if (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(config.ip)) {
+	if (true) { //(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(config.ip)) {
 
 		config.ip = config.ip;
 		save_config();
@@ -180,7 +207,7 @@ function reload_cam () {
 
 	} else {
 
-		alert("IP address entered is invalid! Re-enter camera IP address.");
+		alert("IP address (" + config.ip + ") entered is invalid! Re-enter camera IP address.");
 	}
 }
 
@@ -455,8 +482,12 @@ function cam_focus (camera, action) {
 
 function cam_preset (camera, positionnum, action) {
 
+	document.getElementById('pb' + config.preset[config.camera].toString()).classList.remove('active');
+
+	config.preset[config.camera] = positionnum;
 	var loc = base_url + "/ptzctrl.cgi?ptzcmd&" + action + "&" + positionnum + "";
 	run_action(loc);
+	console.log('config.preset', config.preset);
 }
 
 // $(".alert").fadeTo(2000, 500).slideUp(500, function(){

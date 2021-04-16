@@ -1,6 +1,6 @@
 {
-	"name": "CameraControl",
-	"version": "0.1.5",
+	"name": "ptz-camera-control",
+	"version": "1.0.0",
 	"main": "main.js",
 	"scripts": {
 		"dev": "electron .",
@@ -15,8 +15,11 @@
 		"pack:win": "npm run build:win && electron-builder \"dist/win/Camera Control-win32\" --platform=win --out=\"dist/win\" --config=packager.json"
 	},
 	"dependencies": {
-		"electron-prebuilt": "^0.35.4",
 		"electron-builder": "^2.4.0",
-		"electron-packager": "^5.1.1"
+		"electron-packager": "^5.1.1",
+		"electron-prebuilt": "^0.35.4",
+		"install": "^0.13.0",
+		"npm": "^7.9.0",
+		"obs-websocket-js": "^4.0.2"
 	}
 }
