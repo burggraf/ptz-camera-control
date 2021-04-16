@@ -158,6 +158,15 @@ fieldset {
 fieldset.controls,
 fieldset.presets {
     padding: 10px 9px;
+
+
+    float: left;
+    display: block;
+    /* padding: 0 15px; */
+    margin: 0 auto;
+    position: relative;
+
+
 }
 
 legend {
@@ -364,13 +373,13 @@ legend {
     display: block;
     padding: 0 15px;
     margin: 0 auto;
-    position: relative
+    position: relative;
 }
 
 .pantilt_controls {
-    float: right;
+    float: left;
     display: block;
-    padding: 0
+    padding: 0 15px;
 }
 
 .rocker {
