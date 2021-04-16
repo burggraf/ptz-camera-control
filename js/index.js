@@ -1,7 +1,22 @@
 try {
 	const obs = new OBSWebSocket();
-	obs.connect({ address: 'localhost:4444', password: '' });
-	console.log('connected');		
+	obs.connect({ address: 'localhost:4444', password: 'fbc' })
+	.then(() => {
+		console.log('connected');		
+	}).catch((err) => {
+		console.error('OBSWebSocket setup error', err);		
+	});
+	obs.on('ConnectionOpened', (data) => {
+		// callback(data)
+		console.log('ConnectionOpened', data);
+	});
+	obs.on('ConnectionClosed', (data) => {
+		// callback(data)
+		console.log('ConnectionClosed', data);
+	});
+	obs.on('error', err => {
+		console.error('socket error:', err);
+	});
 } catch(err) {
 	console.log('error connecting to websocket', JSON.stringify(err));
 }
